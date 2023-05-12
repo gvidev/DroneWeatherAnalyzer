@@ -10,6 +10,9 @@ namespace DroneWeatherAnalyzer.Controllers
 {
     public class DroneWeatherAnalyzerController : Controller
     {
+        
+        private const string _ApiKey = "c5dc795eb4a7c047134466ea058da319";
+
         // GET: QuotesAPI
         public ActionResult DroneWeatherAnalyzer()
         {
@@ -22,8 +25,7 @@ namespace DroneWeatherAnalyzer.Controllers
                     "Please be sure that the name of the city that you insert is valid and try again!";
             };
 
-            //            var url = "https://api.openweathermap.org/data/3.0/onecall?lat=42.15&lon=24.15&exclude=hourly,daily&appid=c5dc795eb4a7c047134466ea058da319";
-            var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + geolocation[0] + "&lon=" + geolocation[1] + "&units=metric&APPID=c5dc795eb4a7c047134466ea058da319";
+            var url = $"https://api.openweathermap.org/data/2.5/weather?lat={geolocation[0]}&lon={geolocation[1]}&units=metric&APPID={_ApiKey}";
             var client = new WebClient();
 
             var body = client.DownloadString(url);
@@ -57,16 +59,22 @@ namespace DroneWeatherAnalyzer.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// This will be used for post method which will capture input of the user(name of the city)
+        /// and translate it to geolocation cordinates
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns>  List<string> with 2 params - lat and lon </returns>
         private List<string> FetchGeolocation(string city)
         {
-            // var url = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={_ApiKey}";
-            var url = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=c5dc795eb4a7c047134466ea058da319";
+            var url = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={_ApiKey}";
             var client = new WebClient();
             var body = client.DownloadString(url);
-            JArray data1 = JArray.Parse(body);
+            JArray data = JArray.Parse(body);
 
-            var info1 = (Math.Round((double)data1[0]["lat"], 2));
-            var info2 = (Math.Round((double)data1[0]["lon"], 2));
+            var info1 = (Math.Round((double)data[0]["lat"], 2));
+            var info2 = (Math.Round((double)data[0]["lon"], 2));
 
             List<string> geolocations = new List<string>();
             geolocations.Add(info1.ToString());
@@ -76,6 +84,12 @@ namespace DroneWeatherAnalyzer.Controllers
             return geolocations;
         }
 
+
+
+        /// <summary>
+        /// Use to save and initilize a Dictionary which have { Model of Drone , windResist }
+        /// </summary>
+        /// <returns> Dictionary<string, double> </returns>
         private Dictionary<string, double> DictionaryInitializer()
         {
             return
