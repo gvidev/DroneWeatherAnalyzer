@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneWeatherAnalyzer", "DroneWeatherAnalyzer.csproj", "{BAD4E758-7C4A-4618-BCEA-D30828CC21D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneWeatherAnalyzer", "DroneWeatherAnalyzer.csproj", "{E2BD4F71-7ECF-4C2A-B2F2-C6A5E7591A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BAD4E758-7C4A-4618-BCEA-D30828CC21D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAD4E758-7C4A-4618-BCEA-D30828CC21D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAD4E758-7C4A-4618-BCEA-D30828CC21D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAD4E758-7C4A-4618-BCEA-D30828CC21D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2BD4F71-7ECF-4C2A-B2F2-C6A5E7591A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2BD4F71-7ECF-4C2A-B2F2-C6A5E7591A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2BD4F71-7ECF-4C2A-B2F2-C6A5E7591A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2BD4F71-7ECF-4C2A-B2F2-C6A5E7591A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F74A633E-727B-449C-AE9F-6D3A5C9D4F41}
+		SolutionGuid = {88FB489B-D45F-4363-A4AE-02AE105BA0D8}
 	EndGlobalSection
 EndGlobal
