@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "WeatherAnalyzer";
+}
+
+<h2>Current weather</h2>
+
+
+<h4>
+    Temperature is  @Html.ViewData["temp"] °C
+    <br />
+    Weather: @Html.ViewData["weather"]
+</h4>
+<br />
+<h4>
+    @Html.ViewData["city"],@Html.ViewData["country"]
+</h4>
+
+<h4>
+    The wind speed is @Html.ViewData["wind"] m/s
+    <br />
+    Humidity is @Html.ViewData["humidity"]%
+    <br />
+    Atmospheric pressure is : @Html.ViewData["atmPressure"] hPa
+    <br />
+    Visibility is : @Html.ViewData["visibility"]  km
+</h4>
+
+<h3>
+    @Html.ViewData["alert"]
+</h3>
+
+
