@@ -18,13 +18,17 @@ namespace DroneWeatherAnalyzer.Controllers
 
         private const string _ApiKey = "c5dc795eb4a7c047134466ea058da319";
 
-
+        /// <summary>
+        /// On the first start of the program it takes current Country and then with public API
+        /// retrieve the country Capital city name and paste it in the form
+        /// </summary>
+        /// <returns> View </returns>
         // GET: QuotesAPI
         [HttpGet]
         public ActionResult DroneWeatherAnalyzer()
         {
            
-
+            
             Dictionary<string, double> dronesWindResist = DictionaryInitializer();
             List<SelectListItem> droneList = dronesWindResist.Select(d => new SelectListItem
             {
@@ -57,7 +61,6 @@ namespace DroneWeatherAnalyzer.Controllers
             int mainTempInCelsius = (int)(data["main"]["temp"]);
             double visibilityInKm = (double)data["visibility"] / 1000;
             double windSpeed = (double)data["wind"]["speed"];
-            // double windSpeed = 15;
 
 
             ViewData["temp"] = mainTempInCelsius;
@@ -73,7 +76,7 @@ namespace DroneWeatherAnalyzer.Controllers
             return View();
         }
 
-
+        // POST: QuotesAPI
         [HttpPost]
         public ActionResult DroneWeatherAnalyzer(string city, string selectedDroneModel)
         {
@@ -90,14 +93,11 @@ namespace DroneWeatherAnalyzer.Controllers
             {
                 ViewData["alert"] =
                     "Please be sure that the name of the city that you insert is valid and try again!";
-                ViewData["alertLevel"] = "caution";
+                ViewData["alertCity"] = "caution";
                 return View();
             };
 
  
-            
-
-
             var url = $"https://api.openweathermap.org/data/2.5/weather?lat={geolocation[0]}&lon={geolocation[1]}&units=metric&APPID={_ApiKey}";
             var client = new WebClient();
 
@@ -107,14 +107,14 @@ namespace DroneWeatherAnalyzer.Controllers
             int mainTempInCelsius = (int)(data["main"]["temp"]);
             double visibilityInKm = (double)data["visibility"] / 1000;
             double windSpeed = (double)data["wind"]["speed"];
-            //for test
-            windSpeed = 15;
+            windSpeed = 16;
+            string weather = data["weather"][0]["main"].ToString();
 
 
             ViewData["temp"] = mainTempInCelsius;
             ViewData["city"] = data["name"];
             ViewData["country"] = data["sys"]["country"];
-            ViewData["weather"] = data["weather"][0]["main"];
+            ViewData["weather"] = weather;
             ViewData["humidity"] = data["main"]["humidity"];
             ViewData["wind"] = windSpeed;
             ViewData["visibility"] = visibilityInKm;
@@ -123,11 +123,11 @@ namespace DroneWeatherAnalyzer.Controllers
             // var droneWindResist = dronesWindResist[droneModel];
             double droneWindResist = dronesWindResist.Where(x => x.Key == selectedDroneModel).FirstOrDefault().Value;
 
-            if (droneWindResist <= windSpeed)
+            if (droneWindResist <= windSpeed )
             {
                 ViewData["alert"] = $"Fly with caution! Your drone has wind resist of" +
                     $" {droneWindResist} m/s but the wind in the region is {windSpeed} m/s";
-                ViewData["alertLevel"] = "caution";
+                ViewData["alertWind"] = "caution";
             }
             else
             {
@@ -135,7 +135,13 @@ namespace DroneWeatherAnalyzer.Controllers
                 ViewData["alertLevel"] = "missing";
             }
 
-            
+            if (weather.Contains("Rain") || weather.Contains("Snow"))
+            {
+                ViewData["alertRain"] = $"Flying your drone is not recommended because of the weather!";
+                ViewData["alertWeather"] = "attention";
+            }
+
+
 
             return View();
         }

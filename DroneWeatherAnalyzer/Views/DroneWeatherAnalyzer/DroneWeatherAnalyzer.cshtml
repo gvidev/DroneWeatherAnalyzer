@@ -2,7 +2,7 @@
     ViewBag.Title = "WeatherAnalyzer";
 }
 
-<h2>Current Weather</h2>
+<h2>Search Weather</h2>
 
 @using (Html.BeginForm())
 {
@@ -18,7 +18,7 @@
 
 
 
-    <button type="submit" class="btn btn-primary">Get Weather</button>
+    <button type="submit" class="btn btn-primary mt-4">Get Weather</button>
 }
 
 <hr />
@@ -54,17 +54,31 @@
     </div>
 </div>
 
-@if (Html.ViewData["alertLevel"] == "missing")
+@if (Html.ViewData["alertWeather"] == "attention")
+{
+    <div class="alert alert-warning">
+        <h4>@Html.ViewData["alertRain"]</h4>
+    </div>
+}
+@if (Html.ViewData["alertWind"] == "missing")
 {
     <div class="alert alert-success">
         <h4>@Html.ViewData["alert"]</h4>
     </div>
 }
-@if(Html.ViewData["alertLevel"] == "caution")
+@if (Html.ViewData["alertWind"] == "caution")
 {
     <div class="alert alert-danger">
         <h4>@Html.ViewData["alert"]</h4>
     </div>
 }
+@if (Html.ViewData["alertCity"] == "caution")
+{
+    <div class="alert alert-danger">
+        <h4>@Html.ViewData["alert"]</h4>
+    </div>
+}
+
+
 
 
