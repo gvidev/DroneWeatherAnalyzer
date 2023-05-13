@@ -1,8 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,13 +14,20 @@ namespace DroneWeatherAnalyzer.Controllers
 {
     public class DroneWeatherAnalyzerController : Controller
     {
-        
+
         private const string _ApiKey = "c5dc795eb4a7c047134466ea058da319";
 
         // GET: QuotesAPI
+        [HttpGet ]
         public ActionResult DroneWeatherAnalyzer()
         {
-            List<string> geolocation = FetchGeolocation("Plovdiv");
+            //this retrieve current country name
+            string countryName = RegionInfo.CurrentRegion.DisplayName;
+            //and then with free api gets the Capital of the current country
+            string capitalName = FetchCapitalOfCountry(countryName);
+
+
+            List<string> geolocation = FetchGeolocation(capitalName);
             Dictionary<string, double> dronesWindResist = DictionaryInitializer();
 
             if (!geolocation.Any())
@@ -60,13 +71,20 @@ namespace DroneWeatherAnalyzer.Controllers
         }
 
 
-        /// <summary>
-        /// This will be used for post method which will capture input of the user(name of the city)
-        /// and translate it to geolocation cordinates
-        /// </summary>
-        /// <param name="city"></param>
-        /// <returns>  List<string> with 2 params - lat and lon </returns>
-        private List<string> FetchGeolocation(string city)
+        [HttpPost]
+        public ActionResult DroneWeatherAnalyzer(string city, string droneModel)
+        {
+            return View();
+        }
+
+
+            /// <summary>
+            /// This will be used for post method which will capture input of the user(name of the city)
+            /// and translate it to geolocation cordinates
+            /// </summary>
+            /// <param name="city"></param>
+            /// <returns>  List<string> with 2 params - lat and lon </returns>
+            private List<string> FetchGeolocation(string city)
         {
             var url = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={_ApiKey}";
             var client = new WebClient();
@@ -115,6 +133,26 @@ namespace DroneWeatherAnalyzer.Controllers
             { "DJI Mavic 3", 15},
 
         };
+        }
+
+        /// <summary>
+        /// This method is using api that retrieve info from
+        /// name of the country and I use it to get the capital city of country
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns> string capitalName </returns>
+        private string FetchCapitalOfCountry(string country)
+        {
+            //free api on web 
+            var url = $"https://restcountries.com/v3.1/translation/{country.ToLower()}";
+            var client = new WebClient();
+            var body = client.DownloadString(url);
+            JArray data = JArray.Parse(body);
+            string capitalCityName = data[0]["capital"][0].ToString();
+            //to be sure I trim the result from errors after
+            capitalCityName.Trim();
+            return capitalCityName;
+            
         }
     }
 }
