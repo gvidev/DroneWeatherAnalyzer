@@ -107,7 +107,6 @@ namespace DroneWeatherAnalyzer.Controllers
             int mainTempInCelsius = (int)(data["main"]["temp"]);
             double visibilityInKm = (double)data["visibility"] / 1000;
             double windSpeed = (double)data["wind"]["speed"];
-            windSpeed = 16;
             string weather = data["weather"][0]["main"].ToString();
 
 
@@ -132,7 +131,7 @@ namespace DroneWeatherAnalyzer.Controllers
             else
             {
                 ViewData["alert"] = "Flying your drone is completely safe!";
-                ViewData["alertLevel"] = "missing";
+                ViewData["alertWind"] = "missing";
             }
 
             if (weather.Contains("Rain") || weather.Contains("Snow"))
