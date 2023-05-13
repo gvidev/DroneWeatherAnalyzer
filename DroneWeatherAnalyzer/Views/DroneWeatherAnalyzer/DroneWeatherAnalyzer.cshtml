@@ -1,33 +1,70 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "WeatherAnalyzer";
 }
 
-<h2>Current weather</h2>
+<h2>Current Weather</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Label("city", "City")
+        @Html.TextBox("city", null, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("selectedDroneModel", "Select a drone")
+        @Html.DropDownList("selectedDroneModel", (IEnumerable<SelectListItem>)ViewBag.Drones, new { @class = "form-control" })
+    </div>
 
 
-<h4>
-    Temperature is  @Html.ViewData["temp"] °C
-    <br />
-    Weather: @Html.ViewData["weather"]
-</h4>
-<br />
-<h4>
-    @Html.ViewData["city"],@Html.ViewData["country"]
-</h4>
 
-<h4>
-    The wind speed is @Html.ViewData["wind"] m/s
-    <br />
-    Humidity is @Html.ViewData["humidity"]%
-    <br />
-    Atmospheric pressure is : @Html.ViewData["atmPressure"] hPa
-    <br />
-    Visibility is : @Html.ViewData["visibility"]  km
-</h4>
+    <button type="submit" class="btn btn-primary">Get Weather</button>
+}
 
-<h3>
-    @Html.ViewData["alert"]
-</h3>
+<hr />
+<h3>Current Weather for @Html.ViewData["city"],@Html.ViewData["country"]</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>Temperature</h4>
+        <p>@Html.ViewData["temp"] °C</p>
+    </div>
+    <div class="col-md-4">
+        <h4>Weather</h4>
+        <p>@Html.ViewData["weather"]</p>
+    </div>
+    <div class="col-md-4">
+        <h4>Wind Speed</h4>
+        <p>@Html.ViewData["wind"] m/s</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>Humidity</h4>
+        <p>@Html.ViewData["humidity"]%</p>
+    </div>
+    <div class="col-md-4">
+        <h4>Atmospheric Pressure</h4>
+        <p>@Html.ViewData["atmPressure"] hPa</p>
+    </div>
+    <div class="col-md-4">
+        <h4>Visibility</h4>
+        <p>@Html.ViewData["visibility"] km</p>
+    </div>
+</div>
+
+@if (Html.ViewData["alertLevel"] == "missing")
+{
+    <div class="alert alert-success">
+        <h4>@Html.ViewData["alert"]</h4>
+    </div>
+}
+@if(Html.ViewData["alertLevel"] == "caution")
+{
+    <div class="alert alert-danger">
+        <h4>@Html.ViewData["alert"]</h4>
+    </div>
+}
 
 
